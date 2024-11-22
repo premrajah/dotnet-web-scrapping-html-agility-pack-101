@@ -28,5 +28,6 @@ foreach (var productHtmlElement in productHtmlElements)
 using (var writer = new StreamWriter("product.csv"))
 using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
 {
-    csv.WriteRecord(products);
+    csv.WriteRecords(products);
 }
+
