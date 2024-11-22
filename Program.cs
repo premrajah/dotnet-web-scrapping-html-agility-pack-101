@@ -3,31 +3,24 @@ using dotnet_webscrapping.Models;
 using HtmlAgilityPack;
 using CsvHelper;
 using System.Globalization;
+using dotnet_webscrapping;
 
 Console.WriteLine("Scrapping Project!");
 
-string targetUrl = "https://www.scrapingcourse.com/ecommerce/";
-var web = new HtmlWeb();
-var document = web.Load(targetUrl);
-var products = new List<Product>();
+string targetDemoUrl = "https://www.scrapingcourse.com/ecommerce/";
+string targetAdvanceDemoUrl = "https://www.scrapingcourse.com/ecommerce/page/1/";
 
-var productHtmlElements = document.DocumentNode.QuerySelectorAll("li.product");
-
-foreach (var productHtmlElement in productHtmlElements)
+try
 {
-    var name = HtmlEntity.DeEntitize(productHtmlElement.QuerySelector("h2").InnerText);
-    var url = HtmlEntity.DeEntitize(productHtmlElement.QuerySelector("a").Attributes["href"].Value);
-    var image = HtmlEntity.DeEntitize(productHtmlElement.QuerySelector("img").Attributes["src"].Value);
-    var price = HtmlEntity.DeEntitize(productHtmlElement.QuerySelector(".price").InnerText);
-    var product = new Product() { Name = name, Url = url, Image = image, Price = price };
-    products.Add(product);
+    Console.WriteLine("Starting...");
+
+    // ScrappingCourseScrapper.ScrapDemoSite(targetDemoUrl);
+    ScrappingCourseScrapper.AdvanceScrapeDemoSite(targetAdvanceDemoUrl);
+
+    Console.WriteLine("Completed.");
 }
-
-
-// download csv 
-using (var writer = new StreamWriter("product.csv"))
-using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+catch (System.Exception ex)
 {
-    csv.WriteRecords(products);
+    Console.WriteLine($"Error {ex.Message}");
 }
 
