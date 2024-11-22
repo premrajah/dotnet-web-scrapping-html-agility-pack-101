@@ -1,6 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using dotnet_webscrapping.Models;
 using HtmlAgilityPack;
+using CsvHelper;
+using System.Globalization;
 
 Console.WriteLine("Scrapping Project!");
 
@@ -19,4 +21,12 @@ foreach (var productHtmlElement in productHtmlElements)
     var price = HtmlEntity.DeEntitize(productHtmlElement.QuerySelector(".price").InnerText);
     var product = new Product() { Name = name, Url = url, Image = image, Price = price };
     products.Add(product);
+}
+
+
+// download csv 
+using (var writer = new StreamWriter("product.csv"))
+using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+{
+    csv.WriteRecord(products);
 }
